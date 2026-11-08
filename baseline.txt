@@ -1,0 +1,42 @@
+# Do Campaign History and Economic Indicators Improve Bank Subscription Predictions?
+
+## Group
+Final Project: Tasia, Yaqi, Sunye
+
+## Changes since the proposal
+Following the feedback, we now split the data in time order instead of shuffling the rows, because the subscription rate changes over time. 
+The last 20% is kept for the final test. We also added an indicator for pdays = 999 to show whether a customer had no previous contact.
+
+## Data
+We loaded bank-additional-full.csv from UCI. It has 41,188 rows and 20 original input variables. 
+The output is y, where yes means the customer subscribed to a term deposit. No rows were dropped, and unknown categories were kept. 
+Sets A, B, and C use 7, 11, and 16 inputs before one-hot encoding. These counts include the added never_contacted indicator in B and C.
+Duration was excluded because it is not available before a call.
+
+## Split
+The first 80% (32,950 rows) is used for training and validation. These rows are divided into five blocks of 6,590 rows in the original order. 
+This gives four forward validation folds: each fold trains on the earlier blocks and validates on the next block. 
+The last 20% (8,238 rows) is kept untouched for the final test. 
+
+## Baseline
+We used logistic regression with an L2 penalty. Categorical variables were one-hot encoded, and numeric variables were scaled. 
+These steps were fitted only on the training data in each fold. We tried 13 C values from 10^-8 to 10^4 on a log scale and chose the value with the highest mean validation AP for each feature set. 
+The best C was 10^-8 for both A and B, and 10^-5 for C.
+
+## Result
+The mean validation AP was 0.09219 for A, 0.10158 for B, and 0.07877 for C. 
+The standard deviations across the four validation folds were 0.06672, 0.08564, and 0.04980. 
+The figure shows the mean AP with ±1 fold SD. Adding campaign history increased mean AP by 0.00939, while adding economic indicators decreased it by 0.02281. 
+These are validation results, the test set has not been used.
+
+## Issues found
+The subscription rate varied across the five time blocks, from 2.90% to 12.72%. AP also varied a lot across the validation folds. 
+Adding economic indicators gave a lower mean validation AP than using history variables alone. We still need to check why this happened.
+
+## Next steps
+Before early paper draft, all three members will check predictions, compare AP across validation folds, and investigate why set C had lower AP. \\
+Tasia will write the summary, Yaqi will write the introduction, and Sunye will write the data description. 
+Everyone will contribute to the analysis and review the early paper draft together.
+
+## Code
+https://github.com/TwoSheep326/bank_marketing_project/blob/main/baseline.ipynb
