@@ -1,0 +1,53 @@
+# Do Campaign History and Economic Indicators Improve Bank Subscription Predictions?
+
+## Group
+FinalProject
+
+## Topic
+own
+
+## Question
+Does adding campaign history and economic indicators help predict term deposit subscriptions better than using only customer information?
+
+## Why it matters
+Banks could use these predictions to decide which customers to contact about term deposits. This study will help show whether past campaign records and economic indicators are useful for making that decision.
+
+## Data
+https://archive.ics.uci.edu/dataset/222/bank+marketing
+
+We will use bank-additional-full.csv from the UCI Bank Marketing dataset. After loading the file, we found 41,188 records and 20 input variables. The target y shows whether a customer subscribed to a term deposit. The data is available under CC BY 4.0, and we will credit its creators when sharing results and figures. We will exclude call duration because it is not known before a call.
+
+
+
+## Baseline
+We will use logistic regression as the baseline.
+Open: How should we tune this model while keeping the data in time order?
+
+## Comparison
+We will compare logistic regression with random forest. Both models will use three feature sets:
+
+- A: Customer information: age, job, marital, education, default, housing, loan.
+- B: A plus campaign history: pdays, previous, poutcome.
+- C: B plus economic indicators: emp.var.rate, cons.price.idx, cons.conf.idx, euribor3m, nr.employed.
+
+For each model, we will compare A with B and B with C to see whether the added information improves predictions. We will exclude duration because it is not known before a call.
+
+## Evaluation
+We will use average precision as the main metric and also report ROC- AUC, precision, recall, and confusion matrices. All six model and feature combinations will use the same data splits. Any threshold tuning will use validation data only. The test set is saved for final evaluation, after all model choices are made.
+Open: How should we split the data by time and add error bars?
+
+## Key figure
+The x-axis shows feature sets A, B, and C, and the y-axis shows test AP. One line represents logistic regression and the other represents random forest. Error bars show uncertainty. This figure shows whether adding campaign history and economic indicators improves predictions for each model.
+
+## Risks and fallback
+Most customers did not subscribe, which may make subscribers harder to predict. Some economic indicators may contain similar information, so adding them may not improve predictions much. If random forest takes too long to tune, the project will focus on comparing feature sets A, B, and C using logistic regression.
+
+## Who does what
+Tasia: Summary, analysis, predictions, and model evaluation
+
+Yaqi: Introduction, analysis, predictions, and model evaluation
+
+Sunye: Data description, analysis, predictions, and model evaluation
+
+## AI plan
+ChatGPT will help us explain concepts, debug code, etc. We will check the code, run the experiments, and verify any suggested sources ourselves. AI use will be recorded and included in the final paper’s acknowledgements.
